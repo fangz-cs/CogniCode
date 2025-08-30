@@ -7,7 +7,7 @@ def create_multipage_suite():
     扫描当前目录下的所有 .jsonl 文件，并为每个文件生成一个独立的、功能齐全的标注页面。
     同时创建一个主导航页来链接到所有标注页面。
     """
-    project_dir = 'webpages'
+    project_dir = 'docs'
     
     # 1. 扫描当前目录下所有的 .jsonl 文件
     jsonl_files = glob.glob('./webdata/*.jsonl')
@@ -358,9 +358,11 @@ document.addEventListener('DOMContentLoaded', () => {
     # --- 4. 创建主导航页 (index.html) ---
     links_html = ""
     for jsonl_file in jsonl_files:
-        page_id = os.path.splitext(jsonl_file)[0]
-        annotation_page_name = f'annotate_{page_id}.html'
-        links_html += f'<li><a href="{annotation_page_name}">开始标注: {jsonl_file}</a></li>'
+        page_id = jsonl_file.split('/')[-1][:-6][-1]  # 去掉路径和 .jsonl 后缀
+        annotation_page_name = f"{jsonl_file.split('/')[-1][:-6]}.html"
+        # page_id = os.path.splitext(jsonl_file)[0]
+        # annotation_page_name = f'annotate_{page_id}.html'
+        links_html += f'<li><a href="{annotation_page_name}">开始标注: chunk-{page_id}</a></li>'
         
     index_html_content = f"""
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>标注任务导航</title><link rel="stylesheet" href="style.css"></head>
